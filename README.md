@@ -1,5 +1,13 @@
 # Hello World
 
+## Recommended Reading
+
+Resources created by members of the [`cpp-gamedev`](https://github.com/cpp-gamedev)
+organization:
+
+- <https://cpp-gamedev.netlify.app/tags/101/>
+- <https://www.hentai-chan.dev/blog/cpp-build-process>
+
 ## Requirements
 
 In general, you need to install
