@@ -22,12 +22,12 @@ For VS Code specifically, you also need to install
 - [clangd](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd)
 - [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
 
-## Usage
+## Dev Notes
 
 To configure a new build, enter the root directory, and run
 
 ```cli
-cmake . -B out/debug -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug
+cmake . -B out/debug -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON
 ```
 
 After that, build the application:
@@ -39,6 +39,27 @@ cmake --build out/debug
 From here on you can use the visual debugger on VS Code to create new builds
 by using the short cuts <kbd>ctrl</kbd><kbd>shift</kbd><kbd>B</kbd> followed
 by <kbd>F5</kbd>.
+
+## Clang
+
+This project uses the LLVM style for `clang-format`:
+
+```cli
+clang-format --style=llvm -dump-config > .clang-format
+```
+
+See the [docs](https://clang.llvm.org/extra/clang-tidy/) for all options. Run
+`clang-tidy -list-checks` in the command line to list all enabled checks.
+
+```cli
+clang-tidy ./src/*.[ch]pp -dump-config -checks='clang-analyzer-*,modernize-*,performance-*,readability-*' > .clang-tidy
+```
+
+Run `clang-tidy`. Add the `-fix` option to automatically apply suggested fixes.
+
+```cli
+python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.?pp
+```
 
 ## CI Configuration
 
