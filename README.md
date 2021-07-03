@@ -18,8 +18,9 @@ sudo pacman -S cmake clang --noconfirm
 
 For VS Code specifically, you also need to install
 
-- [CodeLLDB](https://open-vsx.org/extension/vadimcn/vscode-lldb)
-- [clangd](https://open-vsx.org/extension/llvm-vs-code-extensions/vscode-clangd)
+- [CodeLLDB](https://marketplace.visualstudio.com/items?itemName=vadimcn.vscode-lldb)
+- [clangd](https://marketplace.visualstudio.com/items?itemName=llvm-vs-code-extensions.vscode-clangd)
+- [EditorConfig for VS Code](https://marketplace.visualstudio.com/items?itemName=EditorConfig.EditorConfig)
 
 ## Usage
 
