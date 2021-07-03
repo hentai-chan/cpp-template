@@ -38,3 +38,9 @@ cmake --build out/debug
 From here on you can use the visual debugger on VS Code to create new builds
 by using the short cuts <kbd>ctrl</kbd><kbd>shift</kbd><kbd>B</kbd> followed
 by <kbd>F5</kbd>.
+
+## CI Configuration
+
+Go to <https://ci.appveyor.com/> add grant access to your repository. Rename the
+executable in line 20 from `out/hello.sln` to your executable as defined in
+`CMakeLists.txt`.
