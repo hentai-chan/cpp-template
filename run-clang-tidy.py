@@ -1,13 +1,14 @@
 #!/usr/bin/env python
 #
-#===- run-clang-tidy.py - Parallel clang-tidy runner ---------*- python -*--===#
+#===- run-clang-tidy.py - Parallel clang-tidy runner --------*- python -*--===#
 #
 # Part of the LLVM Project, under the Apache License v2.0 with LLVM Exceptions.
 # See https://llvm.org/LICENSE.txt for license information.
 # SPDX-License-Identifier: Apache-2.0 WITH LLVM-exception
 #
-#===------------------------------------------------------------------------===#
+#===-----------------------------------------------------------------------===#
 # FIXME: Integrate with clang-tidy-diff.py
+
 
 """
 Parallel clang-tidy runner
@@ -79,12 +80,17 @@ def make_absolute(f, directory):
 
 
 def get_tidy_invocation(f, clang_tidy_binary, checks, tmpdir, build_path,
-                        header_filter, extra_arg, extra_arg_before, quiet,
-                        config):
+                        header_filter, allow_enabling_alpha_checkers,
+                        extra_arg, extra_arg_before, quiet, config,
+                        line_filter):
     """Gets a command line for clang-tidy."""
-    start = [clang_tidy_binary]
+    start = [clang_tidy_binary, '--use-color']
+    if allow_enabling_alpha_checkers:
+        start.append('-allow-enabling-analyzer-alpha-checkers')
     if header_filter is not None:
         start.append('-header-filter=' + header_filter)
+    if line_filter is not None:
+        start.append('-line-filter=' + line_filter)
     if checks:
         start.append('-checks=' + checks)
     if tmpdir is not None:
@@ -161,8 +167,9 @@ def run_tidy(args, tmpdir, build_path, queue, lock, failed_files):
         name = queue.get()
         invocation = get_tidy_invocation(name, args.clang_tidy_binary, args.checks,
                                          tmpdir, build_path, args.header_filter,
+                                         args.allow_enabling_alpha_checkers,
                                          args.extra_arg, args.extra_arg_before,
-                                         args.quiet, args.config)
+                                         args.quiet, args.config, args.line_filter)
 
         proc = subprocess.Popen(
             invocation, stdout=subprocess.PIPE, stderr=subprocess.PIPE)
@@ -183,6 +190,9 @@ def main():
                                      'in a compilation database. Requires '
                                      'clang-tidy and clang-apply-replacements in '
                                      '$PATH.')
+    parser.add_argument('-allow-enabling-alpha-checkers',
+                        action='store_true', help='allow alpha checkers from '
+                                                  'clang-analyzer.')
     parser.add_argument('-clang-tidy-binary', metavar='PATH',
                         default='clang-tidy',
                         help='path to clang-tidy binary')
@@ -205,6 +215,9 @@ def main():
                         'headers to output diagnostics from. Diagnostics from '
                         'the main file of each translation unit are always '
                         'displayed.')
+    parser.add_argument('-line-filter', default=None,
+                        help='List of files with line ranges to filter the'
+                        'warnings.')
     if yaml:
         parser.add_argument('-export-fixes', metavar='filename', dest='export_fixes',
                             help='Create a yaml file to store suggested fixes in, '
@@ -242,6 +255,8 @@ def main():
 
     try:
         invocation = [args.clang_tidy_binary, '-list-checks']
+        if args.allow_enabling_alpha_checkers:
+            invocation.append('-allow-enabling-analyzer-alpha-checkers')
         invocation.append('-p=' + build_path)
         if args.checks:
             invocation.append('-checks=' + args.checks)
