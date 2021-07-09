@@ -38,7 +38,9 @@ cmake --build out/debug
 
 From here on you can use the visual debugger on VS Code to create new builds
 by using the short cuts <kbd>ctrl</kbd><kbd>shift</kbd><kbd>B</kbd> followed
-by <kbd>F5</kbd>.
+by <kbd>F5</kbd>. Alternatively, you can also use the `run.sh` shell script
+to run these commands individually. This can also be added as a custom task
+in `.vscode/tasks.json`.
 
 ## Clang
 
@@ -58,7 +60,7 @@ clang-tidy ./src/*.[ch]pp -dump-config -checks='clang-analyzer-*,modernize-*,per
 Run `clang-tidy`. Add the `-fix` option to automatically apply suggested fixes.
 
 ```cli
-python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.?pp
+python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.[cp]pp
 ```
 
 ## CI Configuration
@@ -66,3 +68,8 @@ python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.?
 Go to <https://ci.appveyor.com/> add grant access to your repository. Rename the
 executable in line 20 from `out/hello.sln` to your executable as defined in
 `CMakeLists.txt`.
+
+## Acknowledgements
+
+Credit where credit is due: this project was *heavily* inspired by
+<https://www.github.com/cpp-gamedev/cpp-template>.
