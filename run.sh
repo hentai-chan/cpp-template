@@ -5,7 +5,7 @@ if [[ "$1" == "config" ]]; then
 elif [[ "$1" == "build" ]]; then
 	cmake --build out/debug
 elif [[ "$1" == "tidy" ]]; then
-	python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.[cp]pp
+	python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.[ch]pp
 else
 	echo "not implemented."
 fi

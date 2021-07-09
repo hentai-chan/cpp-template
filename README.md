@@ -60,7 +60,7 @@ clang-tidy ./src/*.[ch]pp -dump-config -checks='clang-analyzer-*,modernize-*,per
 Run `clang-tidy`. Add the `-fix` option to automatically apply suggested fixes.
 
 ```cli
-python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.[cp]pp
+python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.[ch]pp
 ```
 
 ## CI Configuration
