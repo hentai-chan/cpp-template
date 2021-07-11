@@ -65,9 +65,8 @@ python run-clang-tidy.py -config='' -p ./out/debug -header-filter='.*' ./src/*.[
 
 ## CI Configuration
 
-Go to <https://ci.appveyor.com/> add grant access to your repository. Rename the
-executable in line 20 from `out/hello.sln` to your executable as defined in
-`CMakeLists.txt`.
+Go to <https://ci.appveyor.com/> add grant access to your repository. In the `Security`
+tab of GitHub, enable code scanning for `code-ql` (optional).
 
 ## Acknowledgements
 
