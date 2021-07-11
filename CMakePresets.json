@@ -1,0 +1,89 @@
+{
+	"version": 1,
+	"cmakeMinimumRequired": {
+		"major": 3,
+		"minor": 19,
+		"patch": 0
+	},
+	"configurePresets": [
+		{
+			"name": "ninja-debug",
+			"displayName": "Debug",
+			"description": "Debug build using Ninja/Clang",
+			"generator": "Ninja",
+			"binaryDir": "out/debug",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": {
+					"type": "STRING",
+					"value": "clang"
+				},
+				"CMAKE_CXX_COMPILER": {
+					"type": "STRING",
+					"value": "clang++"
+				},
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "Debug"
+				},
+				"CMAKE_EXPORT_COMPILE_COMMANDS": {
+					"type": "BOOL",
+					"value": "ON"
+				}
+			}
+		},
+		{
+			"name": "ninja-relwithdebinfo",
+			"displayName": "RelWithDebInfo",
+			"description": "Release with Debug Info build using Ninja/Clang",
+			"generator": "Ninja",
+			"binaryDir": "out/relwithdebinfo",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": {
+					"type": "STRING",
+					"value": "clang"
+				},
+				"CMAKE_CXX_COMPILER": {
+					"type": "STRING",
+					"value": "clang++"
+				},
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "RelWithDebInfo"
+				}
+			}
+		},
+		{
+			"name": "ninja-release",
+			"displayName": "Release",
+			"description": "Release build using Ninja/Clang",
+			"generator": "Ninja",
+			"binaryDir": "out/release",
+			"cacheVariables": {
+				"CMAKE_C_COMPILER": {
+					"type": "STRING",
+					"value": "clang"
+				},
+				"CMAKE_CXX_COMPILER": {
+					"type": "STRING",
+					"value": "clang++"
+				},
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "Release"
+				}
+			}
+		},
+		{
+			"name": "make-release",
+			"description": "Release build using Make",
+			"generator": "Unix Makefiles",
+			"binaryDir": "out/makerelease",
+			"cacheVariables": {
+				"CMAKE_BUILD_TYPE": {
+					"type": "STRING",
+					"value": "Release"
+				}
+			}
+		}
+	]
+}
