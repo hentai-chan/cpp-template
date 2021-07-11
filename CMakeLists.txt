@@ -14,12 +14,28 @@ set(IS_ROOT_PROJECT OFF)
 set(PROJECT_VERSION "0.0.1.0" CACHE STRING "Application Version" FORCE)
 project(${PROJECT_NAME} VERSION "${PROJECT_VERSION}")
 
+# +++ CMAKE INCLUDES +++
+include(cmake/git.cmake)
+
 # determines if this is a top-level project
 if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
 	set(IS_ROOT_PROJECT ON)
 endif()
 
 set(CCJSON "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
+
+find_package(Git QUIET)
+if(GIT_FOUND AND EXISTS "${CMAKE_SOURCE_DIR}/.git")
+	# store commit hash
+	git_get_commit_hash(${PROJECT_NAME}_GIT_COMMIT_HASH)
+	if(IS_ROOT_PROJECT)
+		option(GIT_UPDATE_SUBMODULES "Init/Update submodules during generation" ${IS_ROOT_PROJECT})
+		if(GIT_UPDATE_SUBMODULES)
+			# update and warn on failure
+			git_update_submodules(WARNING)
+		endif()
+	endif()
+endif()
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[cp]pp")
 add_executable(${PROJECT_NAME} ${SOURCES})
