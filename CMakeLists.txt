@@ -10,15 +10,16 @@ set(CMAKE_POSITION_INDEPENDENT_CODE ON)								# enable PIC flag
 
 # +++ PROJECT PARAMETERS +++
 set(PROJECT_NAME hello)
+set(IS_ROOT_PROJECT OFF)
 set(PROJECT_VERSION "0.0.1.0" CACHE STRING "Application Version" FORCE)
 project(${PROJECT_NAME} VERSION "${PROJECT_VERSION}")
 
-set(CCJSON "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
-
-if (EXISTS "${CCJSON}")
-	message(STATUS "Copying ${CCJSON} to project root")
-	file(COPY "${CCJSON}" DESTINATION "${PROJECT_SOURCE_DIR}")
+# determines if this is a top-level project
+if (CMAKE_PROJECT_NAME STREQUAL PROJECT_NAME)
+	set(IS_ROOT_PROJECT ON)
 endif()
+
+set(CCJSON "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
 
 file(GLOB_RECURSE SOURCES CONFIGURE_DEPENDS "${CMAKE_CURRENT_SOURCE_DIR}/src/*.[cp]pp")
 add_executable(${PROJECT_NAME} ${SOURCES})
@@ -33,3 +34,13 @@ if(CMAKE_CXX_COMPILER_ID STREQUAL "MSVC")
 endif()
 
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_17)
+
+if(IS_ROOT_PROJECT)
+	# copy compile commands
+	if(EXISTS "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json")
+		message(STATUS "Copying compile_commands.json")
+		file(COPY "${CMAKE_CURRENT_BINARY_DIR}/compile_commands.json" DESTINATION "${CMAKE_SOURCE_DIR}")
+	endif()
+	# lean appveyor build file
+	configure_file("${CMAKE_CURRENT_SOURCE_DIR}/.appveyor.yml.in" "${CMAKE_CURRENT_SOURCE_DIR}/.appveyor.yml")
+endif()
