@@ -1,7 +1,7 @@
 #!/usr/bin/env bash
 
 if [[ "$1" == "config" ]]; then
-	cmake . -B out/debug -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON --trace-source="CMakeLists.txt"
+	cmake . -B out/debug -G Ninja -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DCMAKE_EXPORT_COMPILE_COMMANDS=ON -DCMAKE_POLICY_DEFAULT_CMP0065=OLD --trace-source="CMakeLists.txt"
 elif [[ "$1" == "build" ]]; then
 	cmake --build out/debug
 elif [[ "$1" == "tidy" ]]; then
