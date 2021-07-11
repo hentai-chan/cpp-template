@@ -4,9 +4,23 @@ cmake_minimum_required(VERSION 3.3 FATAL_ERROR)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_POLICY_DEFAULT_CMP0077 NEW)								# don't let OPTION erase non-cache variables
-set(CMAKE_BUILD_TYPE "Debug" CACHE STRING "")						# ensure CMAKE_BUILD_TYPE is non-empty
 set(CMAKE_CXX_EXTENSIONS OFF CACHE INTERNAL "" FORCE) 				# disable compiler extensions
 set(CMAKE_POSITION_INDEPENDENT_CODE ON)								# enable PIC flag
+
+# +++ DEFAULT BUILD TYPE +++
+
+# set a default build type if none was given
+set(DEFAULT_BUILD_TYPE "Release")
+if(EXISTS "${CMAKE_SOURCE_DIR}/.git")
+	set(DEFAULT_BUILD_TYPE "Debug")
+endif()
+
+if(NOT CMAKE_BUILD_TYPE AND NOT CMAKE_CONFIGURATION_TYPES)
+	message(STATUS "Setting build type to ${DEFAULT_BUILD_TYPE} as none was specified")
+	set(CMAKE_BUILD_TYPE "${DEFAULT_BUILD_TYPE}" CACHE STRING "Choose the type of build." FORCE)
+	# set the possible build type values for cmake-gui
+	set_property(CACHE CMAKE_BUILD_TYPE PROPERTY STRINGS "Debug" "Release" "MinSizeRel" "RelWithDebInfo")
+endif()
 
 # +++ PROJECT PARAMETERS +++
 set(PROJECT_NAME hello)
